@@ -65,8 +65,8 @@ runs:
         port: ${{ env.PORT }}
         username: ${{ inputs.N0C_USER }}
         ssh_private_key: ${{ inputs.N0C_SSH_KEY }}
-        local_path: ${{ inputs.local_path }}
-        remote_path: ${{ inputs.remote_path }}/version/${{ steps.date.outputs.value }}
+        local_path: '${{ inputs.local_path }}'
+        remote_path: '${{ inputs.remote_path }}/version/${{ steps.date.outputs.value }}'
 
     - name: Finish deployment
       uses: appleboy/ssh-action@v1.2.0
