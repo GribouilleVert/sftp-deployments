@@ -61,10 +61,10 @@ runs:
     - name: Deploy to server
       uses: wlixcc/SFTP-Deploy-Action@v1.2.5
       with:
-        server: ${{ env.SERVER }}
-        port: ${{ env.PORT }}
-        username: ${{ inputs.N0C_USER }}
-        ssh_private_key: ${{ inputs.N0C_SSH_KEY }}
+        server: ${{ inputs.host }}
+        port: ${{ inputs.port }}
+        username: ${{ inputs.user }}
+        ssh_private_key: ${{ inputs.private_key }}
         local_path: '${{ inputs.local_path }}'
         remote_path: '${{ inputs.remote_path }}/version/${{ steps.date.outputs.value }}'
 
