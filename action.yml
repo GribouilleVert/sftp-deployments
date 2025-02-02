@@ -83,9 +83,9 @@ runs:
             if [ ! -d "permanent/$name" ]; then
               mkdir "permanent/$name"
             fi
-            ln -s "permanent/$name" "versions/${{ steps.date.outputs.value }}/$name"
+            ln -s "${{ inputs.remote_path }}/permanent/$name" "${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}/$name"
           done
 
           # Update current link
-          ln -snf "versions/${{ steps.date.outputs.value }}/" "current"
+          ln -snf "${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}/" "${{ inputs.remote_path }}/current"
   
