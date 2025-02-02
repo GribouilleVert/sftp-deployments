@@ -39,7 +39,7 @@ runs:
     - name: Get formatted datetime
       id: date
       shell: bash
-      run: echo "::set-ouput name=value::$(date +%Y-%m-%d_%H-%M)"
+      run: echo "value=$(date +%Y-%m-%d_%H-%M)" >> $GITHUB_OUTPUT
 
     - name: Setup remote filesystem structure
       uses: appleboy/ssh-action@v1.2.0
