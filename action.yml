@@ -2,11 +2,6 @@ name: 'Deploy to SFTP'
 description: 'Deploy to an SFTP server with no downtime'
 
 inputs:
-  exclude:
-    description: "The list of files and folders to exclude from deployment, in JSON list format"
-    type: string
-    default: '[]'
-    required: false
   keep_folders:
     description: "The list of folder that should not be changed on the remote, in JSON list format"
     type: string
