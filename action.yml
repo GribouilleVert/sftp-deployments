@@ -79,7 +79,7 @@ runs:
           cd ${{ inputs.remote_path }}
 
           # Link permanent directories
-          for name in '${{ join(fromJSON(inputs.keep_folders), "' '") }}'; do
+          for name in '${{ join(fromJSON(inputs.keep_folders), ''' ''') }}'; do
             if [ ! -d "permanent/$name" ]; then
               mkdir "permanent/$name"
             fi
