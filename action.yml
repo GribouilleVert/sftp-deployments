@@ -5,7 +5,7 @@ inputs:
   keep:
     description: "The list of folder and files that should not be changed on the remote, in JSON list format"
     type: string
-    default: '[]'
+    default: []
     required: false
   host:
     description: "The server host or ip"
