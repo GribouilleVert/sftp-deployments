@@ -18,7 +18,7 @@ inputs:
   local_path:
     description: "The local path to deploy"
     type: string
-    default: './'
+    default: '.'
     required: false
   remote_path:
     description: "The remote path in which to deploy"
@@ -67,6 +67,7 @@ runs:
         ssh_private_key: ${{ inputs.private_key }}
         local_path: '${{ inputs.local_path }}'
         remote_path: '${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}'
+
 
     - name: Finish deployment
       uses: appleboy/ssh-action@v1.2.0
