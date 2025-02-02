@@ -37,10 +37,6 @@ inputs:
     description: "The SSH private key used for authentication"
     type: string
     required: true
-  artifact_name:
-    description: "The artifact containing the files to deploy"
-    type: string
-    required: true
 
 runs:
   using: "composite"
@@ -48,11 +44,6 @@ runs:
     - name: Get formatted datetime
       id: date
       run: echo "::set-ouput name=value::$(date +%Y-%m-%d_%H-%M)"
-
-    - name: Download artifact from build job
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ inputs.artifact_name }}
 
     - name: Setup remote filesystem structure
       uses: appleboy/ssh-action@v1.2.0
