@@ -2,8 +2,8 @@ name: 'Deploy to SFTP'
 description: 'Deploy to an SFTP server with no downtime'
 
 inputs:
-  keep_folders:
-    description: "The list of folder that should not be changed on the remote, in JSON list format"
+  keep:
+    description: "The list of folder and files that should not be changed on the remote, in JSON list format"
     type: string
     default: '[]'
     required: false
@@ -18,7 +18,7 @@ inputs:
   local_path:
     description: "The local path to deploy"
     type: string
-    default: '.'
+    default: './'
     required: false
   remote_path:
     description: "The remote path in which to deploy"
@@ -81,12 +81,15 @@ runs:
 
           # Link permanent directories
           for name in '${{ join(fromJSON(inputs.keep_folders), ''' ''') }}'; do
-            if [ ! -d "permanent/$name" ]; then
-              mkdir "permanent/$name"
+            if [ ! -f "permanent/$name" ]; then
+              echo "WARNING: permanent/$name: file not found" 
             fi
             ln -s "${{ inputs.remote_path }}/permanent/$name" "${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}/$name"
           done
 
           # Update current link
           ln -snf "${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}/" "${{ inputs.remote_path }}/current"
-  
+
+          # Remove older version beyond the last 5
+          cd ${{ inputs.remote_path }}/versions
+          ls -1tr | head -n -5 | xargs -L1 -I% rm '%' 
