@@ -38,6 +38,7 @@ runs:
   steps:
     - name: Get formatted datetime
       id: date
+      shell: bash
       run: echo "::set-ouput name=value::$(date +%Y-%m-%d_%H-%M)"
 
     - name: Setup remote filesystem structure
@@ -45,8 +46,8 @@ runs:
       with:
         host: ${{ inputs.host }}
         port: ${{ inputs.port }}
-        username: ${{ secrets.user }}
-        key: ${{ secrets.private_key }}
+        username: ${{ inputs.user }}
+        key: ${{ inputs.private_key }}
         script: |
           cd ${{ inputs.remote_path }}
           if [ !-d "versions" ]; then
@@ -62,8 +63,8 @@ runs:
       with:
         server: ${{ env.SERVER }}
         port: ${{ env.PORT }}
-        username: ${{ secrets.N0C_USER }}
-        ssh_private_key: ${{ secrets.N0C_SSH_KEY }}
+        username: ${{ inputs.N0C_USER }}
+        ssh_private_key: ${{ inputs.N0C_SSH_KEY }}
         local_path: ${{ inputs.local_path }}
         remote_path: ${{ inputs.remote_path }}/version/${{ steps.date.outputs.value }}
 
@@ -72,8 +73,8 @@ runs:
       with:
         host: ${{ inputs.host }}
         port: ${{ inputs.port }}
-        username: ${{ secrets.user }}
-        key: ${{ secrets.private_key }}
+        username: ${{ inputs.user }}
+        key: ${{ inputs.private_key }}
         script: |
           cd ${{ inputs.remote_path }}
 
