@@ -1,0 +1,104 @@
+name: 'Deploy to SFTP'
+description: 'Deploy to an SFTP server with no downtime'
+
+inputs:
+  exclude:
+    description: "The list of files and folders to exclude from deployment, in JSON list format"
+    type: string
+    default: '[]'
+    required: false
+  keep_folders:
+    description: "The list of folder that should not be changed on the remote, in JSON list format"
+    type: string
+    default: '[]'
+    required: false
+  host:
+    description: "The server host or ip"
+    type: string
+    required: true
+  port:
+    description: "The server port"
+    default: 22
+    required: false
+  local_path:
+    description: "The local path to deploy"
+    type: string
+    default: './'
+    required: false
+  remote_path:
+    description: "The remote path in which to deploy"
+    type: string
+    required: true
+  user:
+    description: "The SSH use to use"
+    type: string
+    required: true
+  private_key:
+    description: "The SSH private key used for authentication"
+    type: string
+    required: true
+  artifact_name:
+    description: "The artifact containing the files to deploy"
+    type: string
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get formatted datetime
+      id: date
+      run: echo "::set-ouput name=value::$(date +%Y-%m-%d_%H-%M)"
+
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.artifact_name }}
+
+    - name: Setup remote filesystem structure
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ inputs.host }}
+        port: ${{ inputs.port }}
+        username: ${{ secrets.user }}
+        key: ${{ secrets.private_key }}
+        script: |
+          cd ${{ inputs.remote_path }}
+          if [ !-d "versions" ]; then
+            mkdir versions
+          fi
+          if [ !-d "permanent" ]; then
+            mkdir permanent
+          fi
+          mkdir versions/${{ steps.date.outputs.value }}
+
+    - name: Deploy to server
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.5
+      with:
+        server: ${{ env.SERVER }}
+        port: ${{ env.PORT }}
+        username: ${{ secrets.N0C_USER }}
+        ssh_private_key: ${{ secrets.N0C_SSH_KEY }}
+        local_path: ${{ inputs.local_path }}
+        remote_path: ${{ inputs.remote_path }}/version/${{ steps.date.outputs.value }}
+
+    - name: Finish deployment
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ inputs.host }}
+        port: ${{ inputs.port }}
+        username: ${{ secrets.user }}
+        key: ${{ secrets.private_key }}
+        script: |
+          cd ${{ inputs.remote_path }}
+
+          # Link permanent directories
+          for name in '{{ join(fromJSON(inputs.keep_folders), "' '") }}'; do
+            if [ !-d "permanent/$name" ]; then
+              mkdir "permanent/$name"
+            fi
+            ln -s "permanent/$name" "versions/${{ steps.date.outputs.value }}/$name"
+          done
+
+          # Update current link
+          ln -snf versions/${{ steps.date.outputs.value }}/ current
+  
