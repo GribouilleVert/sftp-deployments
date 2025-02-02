@@ -51,12 +51,12 @@ runs:
         script: |
           cd ${{ inputs.remote_path }}
           if [ ! -d "versions" ]; then
-            mkdir versions
+            mkdir "versions"
           fi
           if [ ! -d "permanent" ]; then
-            mkdir permanent
+            mkdir "permanent"
           fi
-          mkdir versions/${{ steps.date.outputs.value }}
+          mkdir "versions/${{ steps.date.outputs.value }}"
 
     - name: Deploy to server
       uses: wlixcc/SFTP-Deploy-Action@v1.2.5
@@ -87,5 +87,5 @@ runs:
           done
 
           # Update current link
-          ln -snf versions/${{ steps.date.outputs.value }}/ current
+          ln -snf "versions/${{ steps.date.outputs.value }}/" "current"
   
