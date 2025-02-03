@@ -25,7 +25,7 @@ inputs:
     type: string
     required: true
   user:
-    description: "The SSH use to use"
+    description: "The SSH user to use"
     type: string
     required: true
   private_key:
