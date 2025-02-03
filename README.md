@@ -84,6 +84,8 @@ jobs:
           local_path: './dist'
           remote_path: '/var/www/my-app'
           keep: '[".env", "uploads"]'
+          post_deploy_commands: |
+            npm run build
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -92,15 +94,16 @@ jobs:
 
 ## Action Inputs
 
-| Input           | Description                                                                                                                                                                             | Type   | Required | Default |
-|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|---------|
-| **host**        | The server host or IP                                                                                                                                                                   | string | true     | None    |
-| **port**        | The server port                                                                                                                                                                         | number | false    | `22`    |
-| **user**        | The SSH user to use                                                                                                                                                                     | string | true     | None    |
-| **private_key** | The SSH private key used for authentication                                                                                                                                             | string | true     | None    |
-| **local_path**  | The local path to deploy                                                                                                                                                                | string | false    | `./`    |
-| **remote_path** | The remote path in which to deploy                                                                                                                                                      | string | true     | None    |
-| **keep**        | A JSON array of file or folder names to preserve in a permanent directory. These files/folders must exist under `permanent/` on the remote. They will be symlinked to each new version. | string | false    | `[]`    |
+| Input                    | Description                                                                                                                                                                                                                                     | Type   | Required | Default |
+|--------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|---------|
+| **host**                 | The server host or IP                                                                                                                                                                                                                           | string | true     | None    |
+| **port**                 | The server port                                                                                                                                                                                                                                 | number | false    | `22`    |
+| **user**                 | The SSH user to use                                                                                                                                                                                                                             | string | true     | None    |
+| **private_key**          | The SSH private key used for authentication                                                                                                                                                                                                     | string | true     | None    |
+| **local_path**           | The local path to deploy                                                                                                                                                                                                                        | string | false    | `./`    |
+| **remote_path**          | The remote path in which to deploy                                                                                                                                                                                                              | string | true     | None    |
+| **keep**                 | A JSON array of file or folder names to preserve in a permanent directory. These files/folders must exist under `permanent/` on the remote. They will be symlinked to each new version.                                                         | string | false    | `[]`    |
+| **post_deploy_commands** | Commands to run on the server following after the files have been copied and the links to `permanents/` files have been created, but before the deployment is promoted to current. The default directory is the deployment's version directory. | string | false    | `[]`    |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

@@ -32,6 +32,11 @@ inputs:
     description: "The SSH private key used for authentication"
     type: string
     required: true
+  post_deploy_commands:
+    description: "A command or commands tu run after the files were copied to the server but before the version is promoted to current."
+    type: string
+    required: false
+    default: ''
 
 runs:
   using: "composite"
@@ -86,6 +91,8 @@ runs:
             fi
             ln -s "${{ inputs.remote_path }}/permanent/$name" "${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}/$name"
           done
+          
+          ${{ inputs.post_deploy_commands }}
 
           # Update current link
           ln -snf "${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}/" "${{ inputs.remote_path }}/current"
