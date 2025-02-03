@@ -77,7 +77,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy to SFTP
-        uses: ./.github/actions/deploy-to-sftp # Path to your local action
+        uses: GribouilleVert/sftp-deployments@main
         with:
           host: ${{ secrets.SFTP_HOST }}
           port: 22
