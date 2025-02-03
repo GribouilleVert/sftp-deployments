@@ -13,8 +13,6 @@
     A GitHub action to make SFTP deployments with no downtimes 🚀
     <br />
     <br />
-    <a href="https://github.com/Project-Venus-AI/client.js/pkgs/npm/client.js">Download Package</a>
-    ·
     <a href="https://github.com/GribouilleVert/sftp-deployments/issues/new?labels=bug">Report Bug</a>
     ·
     <a href="https://github.com/GribouilleVert/sftp-deployments/issues/new?labels=enhancement">Request Modification</a>
@@ -97,10 +95,10 @@ jobs:
 | Input           | Description                                                                                                                                                                             | Type   | Required | Default |
 |-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|---------|
 | **host**        | The server host or IP                                                                                                                                                                   | string | true     | None    |
-| **port**        | The server port                                                                                                                                                                         | number | false    | `22     |
+| **port**        | The server port                                                                                                                                                                         | number | false    | `22`    |
 | **user**        | The SSH user to use                                                                                                                                                                     | string | true     | None    |
 | **private_key** | The SSH private key used for authentication                                                                                                                                             | string | true     | None    |
-| **local_path**  | The local path to deploy                                                                                                                                                                | string | false    | `./     |
+| **local_path**  | The local path to deploy                                                                                                                                                                | string | false    | `./`    |
 | **remote_path** | The remote path in which to deploy                                                                                                                                                      | string | true     | None    |
 | **keep**        | A JSON array of file or folder names to preserve in a permanent directory. These files/folders must exist under `permanent/` on the remote. They will be symlinked to each new version. | string | false    | `[]`    |
 
@@ -111,7 +109,7 @@ jobs:
 ## How It Works
 
 1. **Versioned Deployments**
-    The action creates a new version folder based on the current timestamp (e.g., `2025-02-03_12-34) inside a `versions` directory on the server.
+    The action creates a new version folder based on the current timestamp (e.g., `2025-02-03_12-34`) inside a `versions` directory on the server.
 
 2. **Permanent Storage**
     Files or folders listed in `keep` are assumed to reside in a `permanent` directory on the server. During each deployment, the action creates symlinks from the new version to the content in the `permanent` folder.
@@ -140,7 +138,7 @@ jobs:
 ## Troubleshooting
 
 - **Permissions Issues:** Check the SSH key permissions and ensure the remote user can write to `remote_path`.
-- **Missing Permanent Files:** If `keep` lists files/folders that do not exist under `permanent/, a warning will be displayed. Ensure they are pre-created or removed from `keep`.
+- **Missing Permanent Files:** If `keep` lists files/folders that do not exist under `permanent/`, a warning will be displayed. Ensure they are pre-created or removed from `keep`.
 - **File Already Exists:** If a file or symlink of the same name already exists in the new version directory, remove it or rename it on the server before deploying again.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
