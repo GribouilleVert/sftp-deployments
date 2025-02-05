@@ -102,4 +102,4 @@ runs:
 
           # Remove older version beyond the last 5
           cd ${{ inputs.remote_path }}/versions
-          ls -1tr | head -n -5 | xargs -L1 -I% rm '%' 
+          ls -1tr | head -n -5 | xargs -L1 -I% rm -r '%' 
