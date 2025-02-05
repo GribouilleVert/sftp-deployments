@@ -92,7 +92,10 @@ runs:
             ln -s "${{ inputs.remote_path }}/permanent/$name" "${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}/$name"
           done
           
+          cd "${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}"
           ${{ inputs.post_deploy_commands }}
+          
+          cd ${{ inputs.remote_path }}
 
           # Update current link
           ln -snf "${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}/" "${{ inputs.remote_path }}/current"
