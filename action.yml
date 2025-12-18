@@ -88,15 +88,15 @@ runs:
           for name in '${{ join(fromJSON(inputs.keep), ''' ''') }}'; do
             permanent="permanent/$name"
             versionned="${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}/$name"
-            if [ ! -f $permanent ]; then
-              if [ ! -f $versionned ]; then
+            if [ ! -e $permanent ]; then
+              if [ ! -e $versionned ]; then
                 echo "WARNING: $permanent: file not found"
               else
                 echo "WARNING: $permanent: file not found, will copy the existing version from the version"
                 cp $versionned $permanent
                 rm -rf $versionned
               fi
-            elif [ -f $versionned ]; then
+            elif [ -e $versionned ]; then
                 echo "WARNING: $permanent: this file exist in the versionned files, it will be deleted."
                 rm -rf $versionned
             fi
