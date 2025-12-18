@@ -96,7 +96,7 @@ runs:
                 cp $versionned $permanent
                 rm -rf $versionned
               fi
-            elif [ -f $versionned ]
+            elif [ -f $versionned ]; then
                 echo "WARNING: $permanent: this file exist in the versionned files, it will be deleted."
                 rm -rf $versionned
             fi
