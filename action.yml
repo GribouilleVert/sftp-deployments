@@ -46,6 +46,11 @@ runs:
       shell: bash
       run: echo "value=$(date +%Y-%m-%d_%H-%M)" >> $GITHUB_OUTPUT
 
+    - name: TAR Files
+      shell: bash
+      run: |
+        tar -czf /tmp/build.tar.gz '${{ inputs.local_path }}'
+
     - name: Setup remote filesystem structure
       uses: appleboy/ssh-action@v1.2.0
       with:
@@ -70,7 +75,7 @@ runs:
         port: ${{ inputs.port }}
         username: ${{ inputs.user }}
         ssh_private_key: ${{ inputs.private_key }}
-        local_path: '${{ inputs.local_path }}'
+        local_path: '/tmp/build.tar.gz'
         remote_path: '${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}'
 
 
@@ -82,12 +87,17 @@ runs:
         username: ${{ inputs.user }}
         key: ${{ inputs.private_key }}
         script: |
+          version_folder="${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}"
+          cd $version_folder
+          
+          tar -xvzf build.tar.gz
+          
           cd ${{ inputs.remote_path }}
 
           # Link permanent directories
           for name in '${{ join(fromJSON(inputs.keep), ''' ''') }}'; do
             permanent="permanent/$name"
-            versionned="${{ inputs.remote_path }}/versions/${{ steps.date.outputs.value }}/$name"
+            versionned="$version_folder/$name"
             if [ ! -e $permanent ]; then
               if [ ! -e $versionned ]; then
                 echo "WARNING: $permanent: file not found"
