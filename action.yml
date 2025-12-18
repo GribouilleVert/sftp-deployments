@@ -50,6 +50,7 @@ runs:
       shell: bash
       run: |
         tar -cvzf /tmp/build.tar.gz '${{ inputs.local_path }}'
+        ls -la /tmp
 
     - name: Setup remote filesystem structure
       uses: appleboy/ssh-action@v1.2.0
