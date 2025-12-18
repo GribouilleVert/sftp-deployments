@@ -49,7 +49,7 @@ runs:
     - name: TAR Files
       shell: bash
       run: |
-        tar -czf /tmp/build.tar.gz '${{ inputs.local_path }}'
+        tar -cvzf /tmp/build.tar.gz '${{ inputs.local_path }}'
 
     - name: Setup remote filesystem structure
       uses: appleboy/ssh-action@v1.2.0
