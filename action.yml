@@ -92,6 +92,7 @@ runs:
           cd $version_folder
           
           tar -xvzf build.tar.gz
+          rm -f build.tar.gz
           
           cd ${{ inputs.remote_path }}
 
